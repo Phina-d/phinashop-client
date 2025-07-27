@@ -62,3 +62,9 @@ body {
     display: none !important;
   }
 }
+.product-image {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 6px;
+}

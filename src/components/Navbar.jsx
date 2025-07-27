@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { CartContext } from "../context/CartContext";
 import { FaShoppingCart, FaQuestionCircle, FaTimes, FaBars } from "react-icons/fa";
 import HelpModal from "./HelpModal";
+import "./Navbar.css"; // ✅ Import du style séparé
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -14,118 +15,80 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-purple-700 text-white px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center justify-between w-full">
-          <h1 className="text-xl font-bold">
-            <Link to="/">EasyShop</Link>
+      <nav className="navbar">
+        <div className="navbar-container">
+          <h1 className="logo">
+            <Link to="/">Easy Shop</Link>
           </h1>
 
           {/* Menu Burger (mobile) */}
-          <div className="lg:hidden">
-            <button onClick={() => setMenuOpen(!menuOpen)} className="text-white text-xl">
+          <div className="burger-menu">
+            <button onClick={() => setMenuOpen(!menuOpen)} className="burger-button">
               {menuOpen ? <FaTimes /> : <FaBars />}
             </button>
           </div>
 
           {/* Menu standard (desktop) */}
-          <ul className="hidden lg:flex gap-6 items-center">
-            <li><Link to="/" className="hover:underline">Accueil</Link></li>
-            <li><Link to="/produits" className="hover:underline">Produits</Link></li>
+          <ul className="nav-links">
+            <li><Link to="/">Accueil</Link></li>
+            <li><Link to="/produits">Produits</Link></li>
 
             {!user ? (
               <li><Link to="/auth" onClick={() => setMenuOpen(false)}>Connexion</Link></li>
             ) : (
               <li>
-                <button
-                  onClick={() => {
-                    logout();
-                    setMenuOpen(false);
-                  }}
-                  className="bg-transparent border-none cursor-pointer hover:underline"
-                >
+                <button onClick={() => { logout(); setMenuOpen(false); }} className="logout-button">
                   Déconnexion
                 </button>
               </li>
             )}
 
-            <li className="relative">
+            <li className="cart-icon">
               <Link to="/panier">
-                <FaShoppingCart className="text-xl" />
+                <FaShoppingCart />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-red-600 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
-                    {totalItems}
-                  </span>
+                  <span className="cart-badge">{totalItems}</span>
                 )}
               </Link>
             </li>
 
             <li>
-              <button
-                onClick={() => setIsHelpOpen(true)}
-                className="flex items-center gap-1 hover:underline"
-              >
-                <FaQuestionCircle className="text-xl" />
+              <button onClick={() => setIsHelpOpen(true)} className="help-button">
+                <FaQuestionCircle />
                 Aide
               </button>
             </li>
-            <li>
-    <Link to="/admin/produits" className="hover:underline">
-      Admin Produits
-    </Link>
-  </li>
+            <li><Link to="/admin/produits">Admin Produits</Link></li>
           </ul>
         </div>
 
-        {/* Menu mobile déroulant */}
+        {/* Menu mobile */}
         {menuOpen && (
-          <ul className="flex flex-col gap-4 mt-4 lg:hidden">
+          <ul className="nav-links-mobile">
             <li><Link to="/" onClick={() => setMenuOpen(false)}>Accueil</Link></li>
             <li><Link to="/produits" onClick={() => setMenuOpen(false)}>Produits</Link></li>
-            
             {!user ? (
               <li><Link to="/auth" onClick={() => setMenuOpen(false)}>Connexion</Link></li>
             ) : (
               <li>
-                <button
-                  onClick={() => {
-                    logout();
-                    setMenuOpen(false);
-                  }}
-                  className="bg-transparent border-none cursor-pointer"
-                >
+                <button onClick={() => { logout(); setMenuOpen(false); }} className="logout-button">
                   Déconnexion
                 </button>
               </li>
             )}
-
-            <li className="relative">
+            <li>
               <Link to="/panier" onClick={() => setMenuOpen(false)}>
-                <FaShoppingCart className="text-xl inline" />
-                {totalItems > 0 && (
-                  <span className="ml-1 bg-red-600 text-white rounded-full text-xs w-5 h-5 inline-flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
+                <FaShoppingCart />
+                {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
               </Link>
             </li>
-
             <li>
-              <button
-                onClick={() => {
-                  setIsHelpOpen(true);
-                  setMenuOpen(false);
-                }}
-                className="flex items-center gap-1"
-              >
-                <FaQuestionCircle className="text-xl" />
+              <button onClick={() => { setIsHelpOpen(true); setMenuOpen(false); }} className="help-button">
+                <FaQuestionCircle />
                 Aide
               </button>
             </li>
-            <li>
-      <Link to="/admin/produits" onClick={() => setMenuOpen(false)}>
-        Admin Produits
-      </Link>
-    </li>
+            <li><Link to="/admin/produits" onClick={() => setMenuOpen(false)}>Admin Produits</Link></li>
           </ul>
         )}
       </nav>
