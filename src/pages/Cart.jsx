@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom"; // ✅ pour redirection
-import { Link } from "react-router-dom";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, clearCart, total } = useContext(CartContext);
@@ -81,13 +80,12 @@ export default function Cart() {
           Vider le panier
         </button>
 
-        <Link
-  to="/checkout"
-  className="mt-6 inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
->
-  Passer la commande
-</Link>
-
+        <button
+          onClick={handleCheckout}
+          className="mt-6 inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
+        >
+          Passer la commande
+        </button>
       </div>
     </section>
   );
