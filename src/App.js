@@ -12,7 +12,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Checkout from "./pages/Checkout";
 import Confirmation from "./pages/Confirmation";
 import AdminProduits from "./pages/AdminProduits";
-
+import ScrollToTopButton from "./components/ScrollToTopButton";
 export default function App() {
   return (
     <Router>
@@ -30,6 +30,7 @@ export default function App() {
             <Route path="/admin/produits" element={<AdminProduits />} />
           </Routes>
         </main>
+        <ScrollToTopButton />
         <Footer />
       </div>
     </Router>

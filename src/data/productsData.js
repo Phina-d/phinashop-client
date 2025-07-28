@@ -40,11 +40,11 @@ const products = [
   { id: 29, name: "Montre connectée", price: 129, image: "/images/montre-connect.jpg", category: "Électronique", description: "Suivi santé, notifications, appels." },
   { id: 30, name: "Tablette 10 pouces", price: 179, image: "/images/IMG-20250508-WA0090.jpg", category: "Électronique", description: "Idéale pour vidéos, jeux, lecture." },
 
-  { id: 31, name: "Bijoux elegant", price: 20, image: "/images/bijoux.jpg", category: "Électronique", description: "Performant et design moderne." },
-  { id: 32, name: "Tableaux moderne", price: 189, image: "/images/Tableau2.jpg", category: "Électronique", description: "Scanner + impression rapide." },
-  { id: 33, name: "Chambre à coucher moderne", price: 269, image: "/images/salon8.jpg", category: "Électronique", description: "Autonomie et son HD immersif." },
-  { id: 34, name: "Lingerie mauve", price: 100, image: "/images/montre-connect.jpg", category: "Électronique", description: "Suivi santé, notifications, appels." },
-  { id: 35, name: "Veste Dame chic", price: 79, image: "/images/veste.jpg", category: "Électronique", description: "Idéale pour vidéos, jeux, lecture." },
+  {  id: 31,  name: "Bijoux élégant",  price: 20,  image: "/images/bijoux.jpg", category: "Mode", description: "Accessoire raffiné pour sublimer votre tenue.",  },
+  {  id: 32,  name: "Tableau moderne", price: 189,  image: "/images/Tableau2.jpg", category: "Décoration", description: "Art mural contemporain pour embellir votre intérieur.",  },
+  {  id: 33,  name: "Chambre à coucher moderne",  price: 269,  image: "/images/salon8.jpg",  category: "Meubles",  description: "Mobilier élégant et confortable pour vos nuits."  },
+  {  id: 34,  name: "Lingerie mauve",   price: 100,   image: "/images/montre-connect.jpg",   category: "Mode",  description: "Lingerie fine, confortable et séduisante.",  },
+  {  id: 35,  name: "Veste Dame chic",  price: 79,   image: "/images/veste.jpg", category: "Mode",  description: "Veste élégante idéale pour un look professionnel ou casual.",  },
 
   
 ];

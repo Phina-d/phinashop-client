@@ -1,70 +1,110 @@
-# Getting Started with Create React App
+# 🛍️ EasyShop - Frontend React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bienvenue dans la partie **client** de l'application e-commerce **EasyShop**, développée avec **React.js**, **Tailwind CSS** et connectée à un backend Express/MongoDB.
 
-## Available Scripts
+Ce projet propose une interface utilisateur moderne, responsive et conviviale, permettant aux utilisateurs de naviguer, consulter, ajouter des produits à leur panier et effectuer des commandes.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Fonctionnalités principales
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Interface utilisateur moderne et responsive
+- Navigation fluide avec React Router
+- Page d’accueil avec carrousel de produits
+- Authentification des utilisateurs (connexion / inscription)
+- Panier dynamique avec gestion des quantités
+- Pages sécurisées pour l’utilisateur connecté
+- Interface d'administration (accès restreint par rôle JWT)
+- Filtres et recherche de produits
+- Ajout, modification, suppression de produits (admin)
+- Intégration avec backend REST API
+- Stockage local du panier avec `localStorage`
+- Animation et feedback utilisateur interactif (toasts, loaders, transitions)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🧰 Technologies utilisées
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [React.js](https://reactjs.org/)
+- [React Router DOM](https://reactrouter.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Axios](https://axios-http.com/)
+- [Redux Toolkit](https://redux-toolkit.js.org/) (optionnel si utilisé)
+- [JWT Decode](https://www.npmjs.com/package/jwt-decode)
+- [React Toastify](https://fkhadra.github.io/react-toastify/)
+- [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## ⚙️ Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. Cloner le dépôt client
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+git clone https://github.com/votre-utilisateur/easyshop-client.git
+cd easyshop-client
+2. Installer les dépendances
 
-### `npm run eject`
+npm install
+3. Lancer l’application React
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+npm start
+L'application sera accessible via http://localhost:3000
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+🧾 Structure du projet
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+easyshop-client/
+├── public/
+├── src/
+│   ├── assets/           # Images et icônes
+│   ├── components/       # Composants réutilisables (Navbar, Footer, Cards...)
+│   ├── pages/            # Pages principales (Accueil, Produits, Panier, Admin...)
+│   ├── styles/           # Fichiers CSS (si séparés)
+│   ├── utils/            # Fonctions utilitaires, auth, API config
+│   ├── App.js            # Structure principale avec routes
+│   └── index.js          # Point d'entrée React
+├── tailwind.config.js    # Configuration Tailwind
+├── postcss.config.js     # Configuration PostCSS
+└── package.json
+🔐 Authentification et Sécurité
+Les tokens JWT sont stockés dans le localStorage.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Les routes admin sont protégées grâce à une vérification du rôle depuis le token JWT.
 
-## Learn More
+Utilisation de PrivateRoute pour les pages protégées.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+📦 Fonctionnalités avancées 
+Animation d’ajout au panier avec feedback utilisateur
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Badge dynamique du panier dans la navbar
 
-### Code Splitting
+Carrousel de présentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Responsive design mobile/tablette
 
-### Analyzing the Bundle Size
+Tri, recherche, pagination
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+📸 Captures d’écran (à inclure dans le dépôt)
+Ajoutez vos captures dans un dossier /screenshots :
 
-### Making a Progressive Web App
+1-homepage.png
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2-product-details.png
 
-### Advanced Configuration
+3-cart.png
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+4-login.png
 
-### Deployment
+5-admin-dashboard.png
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+# Build production
+npm run build
+Puis suivez les étapes de déploiement sur votre plateforme.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+👩‍💻 Développé par
+Mme NDIAYE
+
+Passionnée par le développement et l’organisation et la rigueur administrative
+
+📄 Licence
+Ce projet est open-source et libre de réutilisation à des fins éducatives.
