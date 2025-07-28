@@ -131,20 +131,30 @@ export default function AdminProduits() {
         <p className="text-red-500">{error}</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {products.map((product) => (
-            <div key={product._id} className="border p-4 rounded shadow">
-              <img src={product.image} alt={product.name} className="w-60 h-60 object-cover rounded" />
-              <h3 className="font-bold">{product.name}</h3>
-              <p>{product.description}</p>
-              <p className="text-green-600 font-semibold">{product.price} FCFA</p>
-              <div className="flex gap-2 mt-2">
-                <button onClick={() => handleEdit(product)} className="bg-yellow-400 px-2 py-1 rounded">
-                  Modifier
-                </button>
-                <button onClick={() => handleDelete(product._id)} className="bg-red-600 text-white px-2 py-1 rounded">
-                  Supprimer
-                </button>
-              </div>
+  {products.map((product) => (
+    <div key={product._id} className="border p-4 rounded shadow text-center">
+      <img
+        src={product.image}
+        alt={product.name}
+        className="w-80 h-80 object-cover rounded mx-auto mb-2"
+      />
+      <h3 className="font-bold text-lg">{product.name}</h3>
+      <p className="text-gray-600">{product.description}</p>
+      <p className="text-green-600 font-semibold mt-1">{product.price} FCFA</p>
+      <div className="flex justify-center gap-2 mt-4">
+        <button
+          onClick={() => handleEdit(product)}
+          className="bg-yellow-400 px-3 py-1 rounded"
+        >
+          Modifier
+        </button>
+        <button
+          onClick={() => handleDelete(product._id)}
+          className="bg-red-600 text-white px-3 py-1 rounded"
+        >
+          Supprimer
+        </button>
+      </div>
             </div>
           ))}
         </div>

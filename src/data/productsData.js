@@ -43,7 +43,7 @@ const products = [
   {  id: 31,  name: "Bijoux élégant",  price: 20,  image: "/images/bijoux.jpg", category: "Mode", description: "Accessoire raffiné pour sublimer votre tenue.",  },
   {  id: 32,  name: "Tableau moderne", price: 189,  image: "/images/Tableau2.jpg", category: "Décoration", description: "Art mural contemporain pour embellir votre intérieur.",  },
   {  id: 33,  name: "Chambre à coucher moderne",  price: 269,  image: "/images/salon8.jpg",  category: "Meubles",  description: "Mobilier élégant et confortable pour vos nuits."  },
-  {  id: 34,  name: "Lingerie mauve",   price: 100,   image: "/images/montre-connect.jpg",   category: "Mode",  description: "Lingerie fine, confortable et séduisante.",  },
+  {  id: 34,  name: "Lingerie mauve",   price: 100,   image: "/images/lingerie2.jpg",   category: "Mode",  description: "Lingerie fine, confortable et séduisante.",  },
   {  id: 35,  name: "Veste Dame chic",  price: 79,   image: "/images/veste.jpg", category: "Mode",  description: "Veste élégante idéale pour un look professionnel ou casual.",  },
 
   
