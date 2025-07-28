@@ -56,7 +56,7 @@ easyshop-client/
 ├── public/
 ├── src/
 │   ├── assets/           # Images et icônes
-│   ├── components/       # Composants réutilisables (Navbar, Footer, Cards...)
+│   ├── components/       # Composants réutilisables (Navbar, Footer, ScrollToTopButton,Cards...)
 │   ├── pages/            # Pages principales (Accueil, Produits, Panier, Admin...)
 │   ├── styles/           # Fichiers CSS (si séparés)
 │   ├── utils/            # Fonctions utilitaires, auth, API config
