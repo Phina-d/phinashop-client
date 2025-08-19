@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
+  const API_URL = process.env.REACT_APP_API_URL; // ✅ backend dynamique
+
+  useEffect(() => {
+    localStorage.removeItem("token"); // Nettoyage si retour manuel
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -19,8 +27,30 @@ export default function Login() {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
-        navigate("/");
+        await login(data.token);
+
+            // ✅ Décoder le token pour récupérer le rôle
+        const decoded = jwtDecode(data.token);
+
+             // 🔹 Redirection selon rôle
+        switch (decoded.role) {
+          case "admin":
+            navigate("/dashboard/admin");
+            break;
+          case "closer":
+            navigate("/dashboard/closer");
+            break;
+          case "chef":
+          case "chef_service": // si c'est le rôle du chef dans ton token
+            navigate("/dashboard/chef");
+            break;
+          case "client":
+            navigate("/dashboard/client");
+            break;
+          default:
+            navigate("/"); // fallback
+        }
+
       } else {
         alert(data.message || "Erreur de connexion");
       }
