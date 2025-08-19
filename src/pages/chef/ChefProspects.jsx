@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+// URL de l'API depuis variable d'environnement
+const API_URL = process.env.REACT_APP_API_URL + "/api/prospects";
+
 export default function ChefProspects() {
   const [prospects, setProspects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,13 +14,14 @@ export default function ChefProspects() {
   useEffect(() => {
     const fetchProspects = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/prospects", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        const token = localStorage.getItem("token");
+        const res = await axios.get(API_URL, {
+          headers: { Authorization: `Bearer ${token}` },
         });
         setProspects(res.data);
-        setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -44,8 +48,9 @@ export default function ChefProspects() {
 
   const submitEdit = async (id) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/prospects/${id}`, editData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const token = localStorage.getItem("token");
+      const res = await axios.put(`${API_URL}/${id}`, editData, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       setProspects(prospects.map((p) => (p._id === id ? res.data : p)));
       cancelEdit();
@@ -58,8 +63,9 @@ export default function ChefProspects() {
     if (!window.confirm("Supprimer ce prospect ?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/prospects/${id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       setProspects(prospects.filter((p) => p._id !== id));
     } catch (err) {
@@ -68,67 +74,85 @@ export default function ChefProspects() {
   };
 
   if (loading) return <p>Chargement des prospects...</p>;
-  if (error) return <p style={{color: 'red'}}>Erreur : {error}</p>;
+  if (error) return <p style={{ color: "red" }}>Erreur : {error}</p>;
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Liste des Prospects</h1>
+      <h1 className="text-2xl font-bold mb-4">Liste des Prospects</h1>
       {prospects.length === 0 ? (
         <p>Aucun prospect trouvé.</p>
       ) : (
-        <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
-          <thead>
+        <table className="min-w-full border border-gray-300 rounded-md">
+          <thead className="bg-gray-100">
             <tr>
-              <th>Nom</th>
-              <th>Email</th>
-              <th>Téléphone</th>
-              <th>Actions</th>
+              <th className="p-2 border-b">Nom</th>
+              <th className="p-2 border-b">Email</th>
+              <th className="p-2 border-b">Téléphone</th>
+              <th className="p-2 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
             {prospects.map((prospect) => (
-              <tr key={prospect._id}>
+              <tr key={prospect._id} className="even:bg-gray-50">
                 {editId === prospect._id ? (
                   <>
-                    <td>
+                    <td className="p-2">
                       <input
                         type="text"
                         name="name"
                         value={editData.name}
                         onChange={handleEditChange}
+                        className="border px-2 py-1 w-full"
                       />
                     </td>
-                    <td>
+                    <td className="p-2">
                       <input
                         type="email"
                         name="email"
                         value={editData.email}
                         onChange={handleEditChange}
+                        className="border px-2 py-1 w-full"
                       />
                     </td>
-                    <td>
+                    <td className="p-2">
                       <input
                         type="text"
                         name="phone"
                         value={editData.phone}
                         onChange={handleEditChange}
+                        className="border px-2 py-1 w-full"
                       />
                     </td>
-                    <td>
-                      <button onClick={() => submitEdit(prospect._id)}>Enregistrer</button>
-                      <button onClick={cancelEdit}>Annuler</button>
+                    <td className="p-2 space-x-2">
+                      <button
+                        onClick={() => submitEdit(prospect._id)}
+                        className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+                      >
+                        Enregistrer
+                      </button>
+                      <button
+                        onClick={cancelEdit}
+                        className="bg-gray-400 text-white px-3 py-1 rounded hover:bg-gray-500"
+                      >
+                        Annuler
+                      </button>
                     </td>
                   </>
                 ) : (
                   <>
-                    <td>{prospect.name}</td>
-                    <td>{prospect.email}</td>
-                    <td>{prospect.phone || "-"}</td>
-                    <td>
-                      <button onClick={() => startEdit(prospect)}>Modifier</button>
+                    <td className="p-2">{prospect.name}</td>
+                    <td className="p-2">{prospect.email}</td>
+                    <td className="p-2">{prospect.phone || "-"}</td>
+                    <td className="p-2 space-x-2">
+                      <button
+                        onClick={() => startEdit(prospect)}
+                        className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      >
+                        Modifier
+                      </button>
                       <button
                         onClick={() => deleteProspect(prospect._id)}
-                        style={{ color: "red", marginLeft: 10 }}
+                        className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                       >
                         Supprimer
                       </button>

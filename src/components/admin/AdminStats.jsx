@@ -16,9 +16,12 @@ function AdminStats() {
 
     async function fetchStats() {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/stats", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/admin/stats`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setStats(res.data);
       } catch (err) {
         console.error(err);
@@ -27,6 +30,7 @@ function AdminStats() {
         setLoading(false);
       }
     }
+
     fetchStats();
   }, []);
 

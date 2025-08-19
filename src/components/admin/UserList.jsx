@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaTrash, FaEdit } from "react-icons/fa";
 
-const API_URL = "http://localhost:5000/api/users";
+// Utilisation de la variable d'environnement pour l'URL du backend
+const API_URL = process.env.REACT_APP_API_URL + "/api/users";
 
 export default function UserList({ searchTerm }) {
   const [users, setUsers] = useState([]);
@@ -58,9 +59,7 @@ export default function UserList({ searchTerm }) {
 
   // Filtrage selon la prop searchTerm reçue de AdminDashboard
   const filteredUsers = users.filter((user) =>
-    `${user.name} ${user.email}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+    `${user.name} ${user.email}`.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -90,9 +89,7 @@ export default function UserList({ searchTerm }) {
                   <td className="p-2">
                     <span
                       className={`px-2 py-1 rounded-full text-white text-sm ${
-                        user.role === "admin"
-                          ? "bg-green-500"
-                          : "bg-blue-500"
+                        user.role === "admin" ? "bg-green-500" : "bg-blue-500"
                       }`}
                     >
                       {user.role}

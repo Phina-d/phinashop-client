@@ -8,7 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL + "/api/users";
 export default function EditUser() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({ name: "", email: "", role: "" });
+  const [userData, setUserData] = useState({ name: "", email: "", role: "client" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -22,6 +22,7 @@ export default function EditUser() {
         setUserData(res.data);
       } catch (err) {
         setError("Erreur lors du chargement des données utilisateur.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -43,7 +44,7 @@ export default function EditUser() {
       alert("Utilisateur mis à jour avec succès !");
       navigate("/admin/users");
     } catch (err) {
-      alert("Erreur lors de la mise à jour.");
+      alert(err.response?.data?.message || "Erreur lors de la mise à jour.");
       console.error(err);
     }
   };

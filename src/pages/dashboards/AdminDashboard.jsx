@@ -5,6 +5,9 @@ import "./AdminDashboard.css";
 import AdminStats from "../../components/admin/AdminStats";
 import UserList from "../admin/UsersListAdmin";
 
+// ⚡ Définir l'URL de l'API depuis l'environnement
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
 
@@ -22,10 +25,9 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(
-          "https://phinashop-backend.onrender.com/api/admin/stats",
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-        );
+        const res = await axios.get(`${API_URL}/api/admin/stats`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         setStats(res.data);
       } catch (err) {
         console.error(err);
@@ -34,10 +36,9 @@ export default function AdminDashboard() {
 
     const fetchClients = async () => {
       try {
-        const res = await axios.get(
-          "https://phinashop-backend.onrender.com/api/users/clients",
-          { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-        );
+        const res = await axios.get(`${API_URL}/api/users/clients`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
         setClients(res.data);
       } catch (err) {
         console.error("Erreur chargement clients:", err);
@@ -55,10 +56,9 @@ export default function AdminDashboard() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `https://phinashop-backend.onrender.com/api/users/${id}`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      await axios.delete(`${API_URL}/api/users/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       setClients((prev) => prev.filter((client) => client._id !== id));
     } catch (err) {
       console.error("Erreur suppression client :", err);

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "https://phinashop-backend.onrender.com/api";
+// Utilisation de la variable d'environnement pour l'URL backend
+const API_URL = process.env.REACT_APP_API_URL + "/api";
 
 export default function ConfirmedClients() {
   const [clients, setClients] = useState([]);

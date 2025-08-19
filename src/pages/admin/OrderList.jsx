@@ -4,7 +4,8 @@ import { CheckCircle2, Trash2, PackageCheck } from "lucide-react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const API_URL = "https://phinashop-backend.onrender.com/api/orders";
+// Utilisation de la variable d'environnement pour l'API
+const API_URL = process.env.REACT_APP_API_URL + "/api/orders";
 
 export default function OrderList() {
   const [orders, setOrders] = useState([]);

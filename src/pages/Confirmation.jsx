@@ -2,9 +2,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
 
-
 export default function Confirmation() {
- const { cart, total, clearCart } = useContext(CartContext);
+  const { cart, total, clearCart } = useContext(CartContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -18,93 +17,73 @@ export default function Confirmation() {
   const [userCode, setUserCode] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = process.env.REACT_APP_API_URL; // ✅ URL backend depuis l'environnement
+
   // Générer le code une fois au montage
   useEffect(() => {
     const randomCode = Math.floor(100000 + Math.random() * 900000);
     setCode(randomCode.toString());
   }, []);
 
-const handleConfirmCode = async () => {
-  if (userCode !== code) {
-    return alert("❌ Code incorrect !");
-  }
+  const handleConfirmCode = async () => {
+    if (userCode !== code) return alert("❌ Code incorrect !");
+    setIsConfirmed(true);
 
-  setIsConfirmed(true);
+    const productsToSend = cart.map((item) => ({
+      productId: item._id || item.id,
+      quantity: item.quantity,
+    }));
 
-  // 🛒 Convertir panier en format attendu par l'API
-  const productsToSend = cart.map((item) => ({
-    productId: item._id || item.id,
-    quantity: item.quantity,
-  }));
+    try {
+      const res = await fetch(`${API_URL}/api/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ products: productsToSend }),
+      });
 
-  try {
-    const res = await fetch(`${API_URL}/api/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        products: productsToSend,
-      }),
-    });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Erreur commande");
+      }
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message || "Erreur commande");
+      // Envoi d’e-mail
+      await handleSendEmail();
+
+      alert("✅ Commande confirmée, enregistrée et facture envoyée !");
+      clearCart();
+      navigate("/produits");
+    } catch (err) {
+      console.error("❌ Erreur création commande :", err);
+      alert("❌ Échec : " + err.message);
     }
+  };
 
-     // ✅ Appelle maintenant l’envoi d’e-mail
-    await handleSendEmail();
-
-   alert("✅ Commande confirmée, enregistrée et facture envoyée !");
-    clearCart();  // <-- vide le panier ici
-    navigate("/produits");
-  } catch (err) {
-    console.error("❌ Erreur création commande :", err);
-    alert("❌ Échec : " + err.message);
-  }
-};
-
-
- const handleSendEmail = async () => {
-    // if (!isConfirmed) {
-    //   alert("❌ Veuillez confirmer votre commande avec le code avant !");
-    //   return;
-    // }
-
-     // ✅ Logs utiles pour déboguer
-  console.log("📤 Envoi email à :", client.email);
-  console.log("🛒 Contenu du panier :", cart);
-  console.log("💰 Total :", total);
+  const handleSendEmail = async () => {
+    console.log("📤 Envoi email à :", client.email);
+    console.log("🛒 Contenu du panier :", cart);
+    console.log("💰 Total :", total);
 
     try {
       const response = await fetch(`${API_URL}/api/email/send-email`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           to: client.email,
           subject: "Facture EasyShop",
           cart,
           total,
-          client: {
-            name: client.nom,
-            address: client.adresse,
-          },
+          client: { name: client.nom, address: client.adresse },
         }),
       });
 
       const data = await response.json();
-      // 🔍 Log de la réponse serveur
-    console.log("📨 Réponse serveur :", data);
-      if (response.ok) {
-        alert("📧 Facture envoyée avec succès !");
-      } else {
-        alert(`❌ Échec de l'envoi : ${data.message || "Erreur inconnue"}`);
-      }
+      console.log("📨 Réponse serveur :", data);
+
+      if (response.ok) alert("📧 Facture envoyée avec succès !");
+      else alert(`❌ Échec de l'envoi : ${data.message || "Erreur inconnue"}`);
     } catch (error) {
       console.error("Erreur:", error);
       alert("❌ Une erreur est survenue.");
@@ -119,7 +98,6 @@ const handleConfirmCode = async () => {
 
       <div className="mb-6 p-4 border rounded bg-gray-50 print:bg-white">
         <h3 className="text-xl font-bold mb-4">Facture</h3>
-
         <div className="mb-4">
           <p><strong>Nom :</strong> {client.nom}</p>
           <p><strong>Email :</strong> {client.email}</p>
@@ -141,9 +119,7 @@ const handleConfirmCode = async () => {
                 <td className="p-2">{item.name}</td>
                 <td className="p-2">{item.quantity}</td>
                 <td className="p-2">{item.price} FCFA</td>
-                <td className="p-2">
-                  {(item.price * item.quantity).toFixed(2)} FCFA
-                </td>
+                <td className="p-2">{(item.price * item.quantity).toFixed(2)} FCFA</td>
               </tr>
             ))}
           </tbody>

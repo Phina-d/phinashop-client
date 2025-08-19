@@ -6,6 +6,9 @@ import { saveAs } from "file-saver";
 import Papa from "papaparse";
 import { useNavigate } from "react-router-dom";
 
+// URL de l'API depuis variable d'environnement
+const API_URL = process.env.REACT_APP_API_URL + "/api/users/clients";
+
 const ClientListForCloser = () => {
   const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,10 +22,9 @@ const ClientListForCloser = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users/clients", {
+        const res = await axios.get(API_URL, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("Clients reçus :", res.data);
         setClients(res.data);
         setFilteredClients(res.data);
       } catch (error) {
@@ -61,31 +63,22 @@ const ClientListForCloser = () => {
     }
 
     setFilteredClients(results);
-    setCurrentPage(1); // reset page on search or sort change
+    setCurrentPage(1);
   }, [searchTerm, clients, sortConfig]);
 
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.text("Liste des clients", 14, 10);
     const tableColumn = ["#", "Nom complet", "Email", "Téléphone", "Date d’inscription"];
-    const tableRows = [];
+    const tableRows = filteredClients.map((client, index) => [
+      index + 1,
+      `${client.prenom || ""} ${client.nom || ""}`,
+      client.email || "",
+      client.telephone || "",
+      new Date(client.createdAt).toLocaleDateString("fr-FR"),
+    ]);
 
-    filteredClients.forEach((client, index) => {
-      tableRows.push([
-        index + 1,
-        `${client.prenom || ""} ${client.nom || ""}`,
-        client.email || "",
-        client.telephone || "",
-        new Date(client.createdAt).toLocaleDateString("fr-FR"),
-      ]);
-    });
-
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-    });
-
+    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
     doc.save("liste_clients.pdf");
   };
 
@@ -103,22 +96,18 @@ const ClientListForCloser = () => {
     saveAs(blob, "liste_clients.csv");
   };
 
-  // Pagination logic
+  // Pagination
   const indexOfLastClient = currentPage * clientsPerPage;
   const indexOfFirstClient = indexOfLastClient - clientsPerPage;
   const currentClients = filteredClients.slice(indexOfFirstClient, indexOfLastClient);
   const totalPages = Math.ceil(filteredClients.length / clientsPerPage);
 
-  // Fonction pour changer l'ordre de tri
   const requestSort = (key) => {
     let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") {
-      direction = "desc";
-    }
+    if (sortConfig.key === key && sortConfig.direction === "asc") direction = "desc";
     setSortConfig({ key, direction });
   };
 
-  // Icône flèche tri simple
   const getSortArrow = (key) => {
     if (sortConfig.key !== key) return null;
     return sortConfig.direction === "asc" ? "▲" : "▼";
@@ -137,16 +126,10 @@ const ClientListForCloser = () => {
           className="border border-gray-300 rounded px-4 py-2 w-full md:w-1/2"
         />
         <div className="flex gap-2">
-          <button
-            onClick={exportPDF}
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-          >
+          <button onClick={exportPDF} className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
             📄 Exporter PDF
           </button>
-          <button
-            onClick={exportCSV}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+          <button onClick={exportCSV} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             📤 Exporter CSV
           </button>
         </div>
@@ -156,40 +139,20 @@ const ClientListForCloser = () => {
         <table className="w-full table-auto border border-gray-300 text-sm">
           <thead className="bg-gray-100 text-left cursor-pointer select-none">
             <tr>
-              <th
-                className="px-4 py-2 border"
-                onClick={() => requestSort("#")}
-                style={{ width: "40px" }}
-              >
-                #
-              </th>
-              <th
-                className="px-4 py-2 border"
-                onClick={() => requestSort("nomComplet")}
-              >
+              <th className="px-4 py-2 border" onClick={() => requestSort("#")}>#</th>
+              <th className="px-4 py-2 border" onClick={() => requestSort("nomComplet")}>
                 Nom complet {getSortArrow("nomComplet")}
               </th>
-              <th
-                className="px-4 py-2 border"
-                onClick={() => requestSort("email")}
-              >
+              <th className="px-4 py-2 border" onClick={() => requestSort("email")}>
                 Email {getSortArrow("email")}
               </th>
-              <th
-                className="px-4 py-2 border"
-                onClick={() => requestSort("telephone")}
-              >
+              <th className="px-4 py-2 border" onClick={() => requestSort("telephone")}>
                 Téléphone {getSortArrow("telephone")}
               </th>
-              <th
-                className="px-4 py-2 border"
-                onClick={() => requestSort("createdAt")}
-              >
+              <th className="px-4 py-2 border" onClick={() => requestSort("createdAt")}>
                 Date d’inscription {getSortArrow("createdAt")}
               </th>
-              <th className="px-4 py-2 border" style={{ width: "140px" }}>
-                Actions
-              </th>
+              <th className="px-4 py-2 border" style={{ width: "140px" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -200,9 +163,7 @@ const ClientListForCloser = () => {
                   <td className="px-4 py-2 border">{client.name}</td>
                   <td className="px-4 py-2 border">{client.email}</td>
                   <td className="px-4 py-2 border">{client.telephone}</td>
-                  <td className="px-4 py-2 border">
-                    {new Date(client.createdAt).toLocaleDateString("fr-FR")}
-                  </td>
+                  <td className="px-4 py-2 border">{new Date(client.createdAt).toLocaleDateString("fr-FR")}</td>
                   <td className="px-4 py-2 border">
                     <button
                       onClick={() => navigate(`/client/profile/${client._id}`)}

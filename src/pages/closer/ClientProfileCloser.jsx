@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
+// URL de l'API depuis variable d'environnement
+const API_URL = process.env.REACT_APP_API_URL;
+
 const ClientProfileCloser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,13 +17,13 @@ const ClientProfileCloser = () => {
   useEffect(() => {
     const fetchClient = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/users/${id}`, {
+        const res = await axios.get(`${API_URL}/api/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setClient(res.data);
-        setLoading(false);
       } catch (err) {
         setError("Erreur lors du chargement des données client.");
+      } finally {
         setLoading(false);
       }
     };
@@ -35,11 +38,11 @@ const ClientProfileCloser = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/users/${id}`, {
+      await axios.delete(`${API_URL}/api/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert("Client supprimé avec succès.");
-      navigate("/closer/liste-clients"); // 🔁 Redirige vers la liste
+      navigate("/closer/liste-clients"); // Redirige vers la liste
     } catch (err) {
       alert("Erreur lors de la suppression du client.");
     }
@@ -72,23 +75,22 @@ const ClientProfileCloser = () => {
         </p>
       </div>
 
-            <div className="flex gap-4">
+      <div className="flex gap-4">
         <button
-  onClick={() => navigate(`/closer/modifier-client/${client._id}`)}
-  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
->
-  📝 Modifier
-</button>
-
+          onClick={() => navigate(`/closer/modifier-client/${client._id}`)}
+          className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+        >
+          📝 Modifier
+        </button>
 
         <button
-          onClick={handleDelete} // ✅ corrige ici aussi pour exécuter la suppression réelle
+          onClick={handleDelete}
           className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
         >
           ❌ Supprimer
         </button>
       </div>
-    </div> // ✅ Fermeture du bloc principal <div>
+    </div>
   );
 };
 

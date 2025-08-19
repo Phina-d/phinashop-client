@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-// URL du backend déployé
-const API_URL = "https://phinashop-backend.onrender.com/api/users";
+// Utilisation de la variable d'environnement pour l'API
+const API_URL = process.env.REACT_APP_API_URL + "/api/users";
 
 export default function UsersListAdmin() {
   const [users, setUsers] = useState([]);
@@ -69,7 +69,6 @@ export default function UsersListAdmin() {
   if (loading)
     return <p className="text-center mt-10 text-gray-600 font-medium">Chargement...</p>;
 
-  // Filtrer les utilisateurs selon searchTerm
   const filteredUsers = users.filter((user) => {
     const search = searchTerm.toLowerCase();
     return (
@@ -165,7 +164,7 @@ export default function UsersListAdmin() {
     <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Gestion des Utilisateurs</h1>
 
-      <div className="flex justify-end mb-8">
+      <div className="flex justify-end mb-8 gap-4">
         <input
           type="text"
           placeholder="🔍 Rechercher par nom, email ou téléphone..."

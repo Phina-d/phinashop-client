@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/products";
+const API_URL = process.env.REACT_APP_API_URL + "/api/products";
 
 const getToken = () => localStorage.getItem("token");
 
@@ -14,7 +14,6 @@ export const getAllProducts = async () => {
 };
 
 export const createProduct = async (productData) => {
-  // productData est un FormData
   const res = await axios.post(API_URL, productData, getAuthHeaders());
   return res.data;
 };

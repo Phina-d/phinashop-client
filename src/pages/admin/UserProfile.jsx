@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// API URL dynamique via variable d'environnement
+const API_URL = process.env.REACT_APP_API_URL + "/api/users";
+
 export default function UserProfile() {
   const { id } = useParams();
   const navigate = useNavigate();  
@@ -13,7 +16,7 @@ export default function UserProfile() {
     const fetchUser = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/users/${id}`, {
+        const res = await axios.get(`${API_URL}/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);

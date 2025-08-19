@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
-// ✅ Sécurisation de l'URL backend
+// ✅ URL backend depuis l'environnement
 const API_URL = process.env.REACT_APP_API_URL + "/api/products";
 
 export default function AdminProduits() {
@@ -185,13 +185,13 @@ export default function AdminProduits() {
                 key={p._id}
                 className="border rounded-lg p-4 shadow hover:shadow-lg transition duration-300 text-center bg-white"
               >
-               {p.image && (
-  <img
-    src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}${p.image}`}
-    alt={p.name}
-    className="w-full h-48 object-cover rounded mb-3"
-  />
-)}
+                {p.image && (
+                  <img
+                    src={`${process.env.REACT_APP_API_URL || "http://localhost:5000"}${p.image}`}
+                    alt={p.name}
+                    className="w-full h-48 object-cover rounded mb-3"
+                  />
+                )}
 
                 <h3 className="text-lg font-semibold">{p.name}</h3>
                 <p className="text-sm text-gray-600">{p.description}</p>

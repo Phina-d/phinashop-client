@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// Utilisation de la variable d'environnement pour l'API
+// Utilisation de la variable d'environnement pour l'URL backend
 const API_URL = process.env.REACT_APP_API_URL + "/api/users";
 
 export default function AddUser() {

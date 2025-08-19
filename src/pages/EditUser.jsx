@@ -10,7 +10,7 @@ export default function EditUser() {
   const [error, setError] = useState(null);
 
   const token = localStorage.getItem("token");
-  const API_URL = process.env.REACT_APP_API_URL; // ✅ backend dynamique
+  const API_URL = process.env.REACT_APP_API_URL; // ✅ URL backend dynamique
 
   useEffect(() => {
     const fetchUser = async () => {

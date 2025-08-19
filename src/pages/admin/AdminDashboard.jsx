@@ -15,7 +15,7 @@ export default function AdminDashboard() {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://phinashop-backend.onrender.com/api/admin/stats",
+          `${process.env.REACT_APP_API_URL}/api/admin/stats`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
